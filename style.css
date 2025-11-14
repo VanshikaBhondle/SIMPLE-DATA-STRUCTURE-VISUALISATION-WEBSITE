@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #70b15f;
+}
+
+#container {
+    margin: 20px;
+}
+
+button {
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+#visualization {
+    margin-top: 30px;
+    min-height: 200px;
+    position: relative;
+}
+
+.node {
+      display: inline-block;
+      padding: 10px 15px;
+      margin: 10px;
+      background-color: #bb4bce;
+      color: white;
+      border-radius: 5px;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+    .node.added {
+      background-color: green;
+      transform: scale(1.2);
+    }
+    .node.deleted {
+      background-color: red;
+      transform: scale(0.5);
+    }

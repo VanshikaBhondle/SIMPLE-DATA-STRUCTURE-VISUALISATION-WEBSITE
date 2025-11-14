@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Data Structure Visualizer</title>
+  <style>
+    body { font-family: Arial; text-align: center; margin: 20px; }
+    h1 { margin-bottom: 40px; }
+    .container { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px; }
+    .ds-section { border: 1px solid #e2ab4e; padding: 20px; border-radius: 10px; width: 250px; background: #f6cdcd; }
+    .ds-section h3 { margin-bottom: 10px; }
+    .controls { margin-bottom: 10px; }
+    input, button { padding: 5px; margin: 2px; }
+    .visual { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; min-height: 40px; margin-top: 10px; }
+    .block { padding: 10px; background: #a2d9df; border: 1px solid #00796b; border-radius: 5px; transition: all 0.3s ease; }
+    .arrow::after { content: '\2192'; margin-left: 5px; }
+    .node { border: 1px solid rgb(165, 217, 165); padding: 8px; border-radius: 50%; }
+  </style>
+</head>
+<body>
+<h1>Data Structure Visualizer</h1>
+<div class="container">
+  <!-- Array -->
+  <div class="ds-section">
+    <h3>Array</h3>
+    <div class="controls">
+      <input type="text" id="arrayVal">
+      <button onclick="insertArray()">Insert</button>
+      <button onclick="deleteArray()">Delete</button>
+    </div>
+    <div id="arrayDisplay" class="visual"></div>
+  </div>
+  <!-- Stack -->
+  <div class="ds-section">
+    <h3>Stack</h3>
+    <div class="controls">
+      <input type="text" id="stackVal">
+      <button onclick="pushStack()">Insert</button>
+      <button onclick="popStack()">Delete</button>
+    </div>
+    <div id="stackDisplay" class="visual" style="flex-direction: column-reverse;"></div>
+  </div>
+  <!-- Queue -->
+  <div class="ds-section">
+    <h3>Queue</h3>
+    <div class="controls">
+      <input type="text" id="queueVal">
+      <button onclick="enqueue()">Insert</button>
+      <button onclick="dequeue()">Delete</button>
+    </div>
+    <div id="queueDisplay" class="visual"></div>
+  </div>
+  <!-- Linked List -->
+  <div class="ds-section">
+    <h3>Linked List</h3>
+    <div class="controls">
+      <input type="text" id="listVal">
+      <button onclick="insertList()">Insert</button>
+      <button onclick="deleteList()">Delete</button>
+    </div>
+    <div id="listDisplay" class="visual"></div>
+  </div>
+  <!-- BST -->
+  <div class="ds-section">
+    <h3>Binary Search Tree</h3>
+    <div class="controls">
+      <input type="text" id="bstVal">
+      <button onclick="insertBST()">Insert</button>
+      <button onclick="deleteBST()">Delete</button>
+    </div>
+    <div id="bstDisplay" class="visual"></div>
+  </div>
+</div>
+<script>
+  
+  
+  // Color palette
+  const colors = ['#4caf50', '#ffeb3b', '#03a9f4', '#ff5722', '#8e44ad'];
+  function getColor(index) {
+    return colors[index % colors.length];
+  }
+
+  
+
+  // Array
+  const array = [];
+  function insertArray() {
+    const val = document.getElementById('arrayVal').value;
+    if (val) array.push(val);
+    renderArray();
+  }
+  function deleteArray() {
+    array.pop();
+    renderArray();
+  }
+  function renderArray() {
+    const display = document.getElementById('arrayDisplay');
+    display.innerHTML = '';
+    array.forEach(v => display.innerHTML += `<div class='block'>${v}</div>`);
+  }
+
+  // Stack
+  const stack = [];
+  function pushStack() {
+    const val = document.getElementById('stackVal').value;
+    if (val) stack.push(val);
+    renderStack();
+  }
+  function popStack() {
+    stack.pop();
+    renderStack();
+  }
+  function renderStack() {
+    const display = document.getElementById('stackDisplay');
+    display.innerHTML = '';
+    stack.forEach(v => display.innerHTML += `<div class='block'>${v}</div>`);
+  }
+
+  // Queue
+  const queue = [];
+  function enqueue() {
+    const val = document.getElementById('queueVal').value;
+    if (val) queue.push(val);
+    renderQueue();
+  }
+  function dequeue() {
+    queue.shift();
+    renderQueue();
+  }
+  function renderQueue() {
+    const display = document.getElementById('queueDisplay');
+    display.innerHTML = '';
+    queue.forEach(v => display.innerHTML += `<div class='block'>${v}</div>`);
+  }
+
+  // Linked List
+  const list = [];
+  function insertList() {
+    const val = document.getElementById('listVal').value;
+    if (val) list.push(val);
+    renderList();
+  }
+  function deleteList() {
+    list.shift();
+    renderList();
+  }
+  function renderList() {
+    const display = document.getElementById('listDisplay');
+    display.innerHTML = '';
+    list.forEach(v => display.innerHTML += `<div class='block arrow'>${v}</div>`);
+  }
+
+  // Binary Search Tree
+  class Node {
+    constructor(val) {
+      this.val = val;
+      this.left = null;
+      this.right = null;
+    }
+  }
+  let bstRoot = null;
+  function insertBST() {
+    const val = parseInt(document.getElementById('bstVal').value);
+    if (!isNaN(val)) {
+      bstRoot = insertBSTNode(bstRoot, val);
+      renderBST();
+    }
+  }
+  function insertBSTNode(root, val) {
+    if (!root) return new Node(val);
+    if (val < root.val) root.left = insertBSTNode(root.left, val);
+    else root.right = insertBSTNode(root.right, val);
+    return root;
+  }
+  function renderBST() {
+    const display = document.getElementById('bstDisplay');
+    display.innerHTML = '';
+    function traverse(node) {
+      if (!node) return '';
+      return `<div class='node'>${node.val}<div style='display:flex;gap:10px;'>${traverse(node.left)}${traverse(node.right)}</div></div>`;
+    }
+    display.innerHTML = traverse(bstRoot);
+  }
+</script>
+</body>
+</html>
