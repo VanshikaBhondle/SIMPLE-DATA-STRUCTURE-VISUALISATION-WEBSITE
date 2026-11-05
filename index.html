@@ -1,186 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Data Structure Visualizer</title>
-  <style>
-    body { font-family: Arial; text-align: center; margin: 20px; }
-    h1 { margin-bottom: 40px; }
-    .container { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px; }
-    .ds-section { border: 1px solid #e2ab4e; padding: 20px; border-radius: 10px; width: 250px; background: #f6cdcd; }
-    .ds-section h3 { margin-bottom: 10px; }
-    .controls { margin-bottom: 10px; }
-    input, button { padding: 5px; margin: 2px; }
-    .visual { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; min-height: 40px; margin-top: 10px; }
-    .block { padding: 10px; background: #a2d9df; border: 1px solid #00796b; border-radius: 5px; transition: all 0.3s ease; }
-    .arrow::after { content: '\2192'; margin-left: 5px; }
-    .node { border: 1px solid rgb(165, 217, 165); padding: 8px; border-radius: 50%; }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<h1>Data Structure Visualizer</h1>
-<div class="container">
-  <!-- Array -->
-  <div class="ds-section">
-    <h3>Array</h3>
-    <div class="controls">
-      <input type="text" id="arrayVal">
-      <button onclick="insertArray()">Insert</button>
-      <button onclick="deleteArray()">Delete</button>
-    </div>
-    <div id="arrayDisplay" class="visual"></div>
-  </div>
-  <!-- Stack -->
-  <div class="ds-section">
-    <h3>Stack</h3>
-    <div class="controls">
-      <input type="text" id="stackVal">
-      <button onclick="pushStack()">Insert</button>
-      <button onclick="popStack()">Delete</button>
-    </div>
-    <div id="stackDisplay" class="visual" style="flex-direction: column-reverse;"></div>
-  </div>
-  <!-- Queue -->
-  <div class="ds-section">
-    <h3>Queue</h3>
-    <div class="controls">
-      <input type="text" id="queueVal">
-      <button onclick="enqueue()">Insert</button>
-      <button onclick="dequeue()">Delete</button>
-    </div>
-    <div id="queueDisplay" class="visual"></div>
-  </div>
-  <!-- Linked List -->
-  <div class="ds-section">
-    <h3>Linked List</h3>
-    <div class="controls">
-      <input type="text" id="listVal">
-      <button onclick="insertList()">Insert</button>
-      <button onclick="deleteList()">Delete</button>
-    </div>
-    <div id="listDisplay" class="visual"></div>
-  </div>
-  <!-- BST -->
-  <div class="ds-section">
-    <h3>Binary Search Tree</h3>
-    <div class="controls">
-      <input type="text" id="bstVal">
-      <button onclick="insertBST()">Insert</button>
-      <button onclick="deleteBST()">Delete</button>
-    </div>
-    <div id="bstDisplay" class="visual"></div>
-  </div>
-</div>
-<script>
-  
-  
-  // Color palette
-  const colors = ['#4caf50', '#ffeb3b', '#03a9f4', '#ff5722', '#8e44ad'];
-  function getColor(index) {
-    return colors[index % colors.length];
-  }
+  <!-- Header -->
+  <header class="header">
+    <h1>Data Structure Visualizer</h1>
+    <p>Interactive visualizations for Array, Stack, Queue, Linked List, BST, Heap, Graph & Hash Table</p>
+  </header>
 
-  
+  <!-- Top-level tabs -->
+  <nav class="tabs">
+    <button class="tab active" data-tab="array">Array</button>
+    <button class="tab" data-tab="stack">Stack</button>
+    <button class="tab" data-tab="queue">Queue</button>
+    <button class="tab" data-tab="linkedlist">Linked List</button>
+    <button class="tab" data-tab="bst">BST</button>
+    <button class="tab" data-tab="heap">Heap</button>
+    <button class="tab" data-tab="graph">Graph</button>
+    <button class="tab" data-tab="hash">Hash Table</button>
+  </nav>
 
-  // Array
-  const array = [];
-  function insertArray() {
-    const val = document.getElementById('arrayVal').value;
-    if (val) array.push(val);
-    renderArray();
-  }
-  function deleteArray() {
-    array.pop();
-    renderArray();
-  }
-  function renderArray() {
-    const display = document.getElementById('arrayDisplay');
-    display.innerHTML = '';
-    array.forEach(v => display.innerHTML += `<div class='block'>${v}</div>`);
-  }
+  <main class="content">
 
-  // Stack
-  const stack = [];
-  function pushStack() {
-    const val = document.getElementById('stackVal').value;
-    if (val) stack.push(val);
-    renderStack();
-  }
-  function popStack() {
-    stack.pop();
-    renderStack();
-  }
-  function renderStack() {
-    const display = document.getElementById('stackDisplay');
-    display.innerHTML = '';
-    stack.forEach(v => display.innerHTML += `<div class='block'>${v}</div>`);
-  }
+    <!-- ============== ARRAY ============== -->
+    <section id="array" class="panel active">
+      <h2>Array</h2>
+      <div class="controls">
+        <input type="text" id="arrInput" placeholder="e.g. 5,3,8,1,9" />
+        <button onclick="loadArray()">Load</button>
+        <input type="number" id="arrIdx" placeholder="index" />
+        <input type="number" id="arrVal" placeholder="value" />
+        <button onclick="insertAt()">Insert@i</button>
+        <button onclick="deleteAt()">Delete@i</button>
+        <button onclick="updateAt()">Update@i</button>
+        <button onclick="reverseArray()">Reverse</button>
+        <input type="number" id="arrSearch" placeholder="search value" />
+        <button onclick="linearSearch()">Linear Search</button>
+        <button onclick="binarySearch()">Binary Search</button>
+        <select id="sortAlgo">
+          <option value="bubble">Bubble</option>
+          <option value="selection">Selection</option>
+          <option value="insertion">Insertion</option>
+          <option value="merge">Merge</option>
+          <option value="quick">Quick</option>
+        </select>
+        <button onclick="runSort()">Sort</button>
+      </div>
+      <div id="arrView" class="view row"></div>
+      <p id="arrStatus" class="status"></p>
+    </section>
 
-  // Queue
-  const queue = [];
-  function enqueue() {
-    const val = document.getElementById('queueVal').value;
-    if (val) queue.push(val);
-    renderQueue();
-  }
-  function dequeue() {
-    queue.shift();
-    renderQueue();
-  }
-  function renderQueue() {
-    const display = document.getElementById('queueDisplay');
-    display.innerHTML = '';
-    queue.forEach(v => display.innerHTML += `<div class='block'>${v}</div>`);
-  }
+    <!-- ============== STACK ============== -->
+    <section id="stack" class="panel">
+      <h2>Stack (LIFO)</h2>
+      <div class="controls">
+        <input type="number" id="stackVal" placeholder="value" />
+        <button onclick="pushStack()">Push</button>
+        <button onclick="popStack()">Pop</button>
+        <button onclick="peekStack()">Peek</button>
+        <button onclick="stackInfo()">isEmpty / Size</button>
+        <button onclick="resetStack()">Clear</button>
+      </div>
+      <div id="stackView" class="view col-reverse"></div>
+      <p id="stackStatus" class="status"></p>
+    </section>
 
-  // Linked List
-  const list = [];
-  function insertList() {
-    const val = document.getElementById('listVal').value;
-    if (val) list.push(val);
-    renderList();
-  }
-  function deleteList() {
-    list.shift();
-    renderList();
-  }
-  function renderList() {
-    const display = document.getElementById('listDisplay');
-    display.innerHTML = '';
-    list.forEach(v => display.innerHTML += `<div class='block arrow'>${v}</div>`);
-  }
+    <!-- ============== QUEUE ============== -->
+    <section id="queue" class="panel">
+      <h2>Queue</h2>
+      <div class="subtabs">
+        <button class="subtab active" data-qtype="linear">Linear</button>
+        <button class="subtab" data-qtype="circular">Circular</button>
+        <button class="subtab" data-qtype="priority">Priority</button>
+        <button class="subtab" data-qtype="deque">Deque</button>
+      </div>
 
-  // Binary Search Tree
-  class Node {
-    constructor(val) {
-      this.val = val;
-      this.left = null;
-      this.right = null;
-    }
-  }
-  let bstRoot = null;
-  function insertBST() {
-    const val = parseInt(document.getElementById('bstVal').value);
-    if (!isNaN(val)) {
-      bstRoot = insertBSTNode(bstRoot, val);
-      renderBST();
-    }
-  }
-  function insertBSTNode(root, val) {
-    if (!root) return new Node(val);
-    if (val < root.val) root.left = insertBSTNode(root.left, val);
-    else root.right = insertBSTNode(root.right, val);
-    return root;
-  }
-  function renderBST() {
-    const display = document.getElementById('bstDisplay');
-    display.innerHTML = '';
-    function traverse(node) {
-      if (!node) return '';
-      return `<div class='node'>${node.val}<div style='display:flex;gap:10px;'>${traverse(node.left)}${traverse(node.right)}</div></div>`;
-    }
-    display.innerHTML = traverse(bstRoot);
-  }
-</script>
+      <!-- Linear -->
+      <div class="qpanel active" data-qpanel="linear">
+        <div class="controls">
+          <input type="number" id="qVal" placeholder="value" />
+          <button onclick="enqueue()">Enqueue</button>
+          <button onclick="dequeue()">Dequeue</button>
+          <button onclick="peekQueue()">Peek</button>
+          <button onclick="queueInfo()">isEmpty / Size</button>
+          <button onclick="resetQueue()">Clear</button>
+        </div>
+        <div id="qView" class="view row"></div>
+      </div>
+
+      <!-- Circular -->
+      <div class="qpanel" data-qpanel="circular">
+        <div class="controls">
+          <input type="number" id="cqCap" placeholder="capacity (default 6)" />
+          <button onclick="cqInit()">Init</button>
+          <input type="number" id="cqVal" placeholder="value" />
+          <button onclick="cqEnqueue()">Enqueue</button>
+          <button onclick="cqDequeue()">Dequeue</button>
+          <button onclick="cqClear()">Clear</button>
+        </div>
+        <div id="cqView" class="view row"></div>
+      </div>
+
+      <!-- Priority -->
+      <div class="qpanel" data-qpanel="priority">
+        <div class="controls">
+          <input type="number" id="pqVal" placeholder="value" />
+          <input type="number" id="pqPri" placeholder="priority (lower = higher)" />
+          <button onclick="pqEnqueue()">Enqueue</button>
+          <button onclick="pqDequeue()">Dequeue</button>
+          <button onclick="pqClear()">Clear</button>
+        </div>
+        <div id="pqView" class="view row"></div>
+      </div>
+
+      <!-- Deque -->
+      <div class="qpanel" data-qpanel="deque">
+        <div class="controls">
+          <input type="number" id="dqVal" placeholder="value" />
+          <button onclick="dqPushFront()">Push Front</button>
+          <button onclick="dqPushBack()">Push Back</button>
+          <button onclick="dqPopFront()">Pop Front</button>
+          <button onclick="dqPopBack()">Pop Back</button>
+          <button onclick="dqClear()">Clear</button>
+        </div>
+        <div id="dqView" class="view row"></div>
+      </div>
+
+      <p id="queueStatus" class="status"></p>
+    </section>
+
+    <!-- ============== LINKED LIST ============== -->
+    <section id="linkedlist" class="panel">
+      <h2>Linked List</h2>
+      <div class="subtabs">
+        <button class="subtab active" data-lltype="singly">Singly</button>
+        <button class="subtab" data-lltype="doubly">Doubly</button>
+        <button class="subtab" data-lltype="circular">Circular</button>
+      </div>
+      <div class="controls">
+        <input type="number" id="llVal" placeholder="value" />
+        <input type="number" id="llPos" placeholder="position" />
+        <button onclick="llInsert()">Insert@pos</button>
+        <button onclick="llDelete()">Delete@pos</button>
+        <button onclick="llSearch()">Search</button>
+        <button onclick="llSort()">Sort</button>
+        <button onclick="llReverse()">Reverse</button>
+        <button onclick="llMiddle()">Find Middle</button>
+        <button onclick="llInjectCycle()">Inject Cycle</button>
+        <button onclick="llDetectCycle()">Detect Cycle</button>
+        <button onclick="llClear()">Clear</button>
+      </div>
+      <div id="llView" class="view row"></div>
+      <p id="llStatus" class="status"></p>
+    </section>
+
+    <!-- ============== BST ============== -->
+    <section id="bst" class="panel">
+      <h2>Binary Search Tree</h2>
+      <div class="controls">
+        <input type="number" id="bstVal" placeholder="value" />
+        <button onclick="bstInsert()">Insert</button>
+        <button onclick="bstDelete()">Delete</button>
+        <button onclick="bstSearch()">Search</button>
+        <button onclick="bstTraverse('inorder')">Inorder</button>
+        <button onclick="bstTraverse('preorder')">Preorder</button>
+        <button onclick="bstTraverse('postorder')">Postorder</button>
+        <button onclick="bstTraverse('level')">Level-order</button>
+        <button onclick="bstStats()">Height/Min/Max</button>
+        <button onclick="bstClear()">Clear</button>
+      </div>
+      <div id="bstView" class="view"></div>
+      <p id="bstStatus" class="status"></p>
+    </section>
+
+    <!-- ============== HEAP ============== -->
+    <section id="heap" class="panel">
+      <h2>Heap</h2>
+      <div class="controls">
+        <select id="heapType">
+          <option value="min">Min-Heap</option>
+          <option value="max">Max-Heap</option>
+        </select>
+        <button onclick="heapSetType()">Set Type (resets)</button>
+        <input type="number" id="heapVal" placeholder="value" />
+        <button onclick="heapInsert()">Insert</button>
+        <button onclick="heapExtract()">Extract Root</button>
+        <button onclick="heapPeek()">Peek</button>
+        <input type="text" id="heapBuild" placeholder="build: 7,3,9,1,5" />
+        <button onclick="heapBuildFn()">Build Heap</button>
+        <button onclick="heapClear()">Clear</button>
+      </div>
+      <div id="heapView" class="view"></div>
+      <p id="heapStatus" class="status"></p>
+    </section>
+
+    <!-- ============== GRAPH ============== -->
+    <section id="graph" class="panel">
+      <h2>Graph</h2>
+      <div class="controls">
+        <input type="text" id="gNode" placeholder="node label (A)" />
+        <button onclick="gAddNode()">Add Node</button>
+        <button onclick="gRemoveNode()">Remove Node</button>
+        <input type="text" id="gEdgeFrom" placeholder="from" />
+        <input type="text" id="gEdgeTo" placeholder="to" />
+        <button onclick="gAddEdge()">Add Edge</button>
+        <button onclick="gRemoveEdge()">Remove Edge</button>
+        <label class="inline">
+          <input type="checkbox" id="gDirected" /> directed
+        </label>
+        <input type="text" id="gStart" placeholder="start node" />
+        <button onclick="gBFS()">BFS</button>
+        <button onclick="gDFS()">DFS</button>
+        <button onclick="gClear()">Clear</button>
+      </div>
+      <div id="gView" class="view"></div>
+      <p id="gStatus" class="status"></p>
+    </section>
+
+    <!-- ============== HASH TABLE ============== -->
+    <section id="hash" class="panel">
+      <h2>Hash Table (Separate Chaining)</h2>
+      <div class="controls">
+        <input type="number" id="hBuckets" placeholder="buckets (default 7)" />
+        <button onclick="hInit()">Init</button>
+        <input type="text" id="hKey" placeholder="key" />
+        <input type="text" id="hVal" placeholder="value" />
+        <button onclick="hSet()">Set</button>
+        <button onclick="hGet()">Get</button>
+        <button onclick="hDel()">Delete</button>
+        <button onclick="hClear()">Clear</button>
+      </div>
+      <div id="hView" class="view col"></div>
+      <p id="hStatus" class="status"></p>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>Built with vanilla HTML, CSS & JavaScript — for learning DSA visually.</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
